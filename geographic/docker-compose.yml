@@ -1,0 +1,30 @@
+
+services:
+  mysql-db:
+    image: mysql:mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: dhl_assessment
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+    ports:
+      - "3306:3306"
+    networks:
+      - microservice-network
+
+  postcode-app:
+    build: .
+    container_name: postcode-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/dhl_assessment
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 
+    networks:
+      - microservice-network
+
+networks:
+  microservice-network:
+    driver: bridge
